@@ -5,10 +5,13 @@
     justify-content: space-between;
   }
   
-  .productImg img {
-    width: 100%;
+  .productImg {
     height: 180px;
     background-color: #f2f2f2;
+  }
+  
+  .productImg img {
+    height: 100%;
     display: block;
   }
   
