@@ -1,10 +1,12 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Product from "@components/ecommerce/Product/Product";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
-import actGetProductsCatPrefix from "@store/categories copy/act/actGetProductsCatPrefix";
+import actGetProductsCatPrefix from "@store/products/act/actGetProductsCatPrefix";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { productsCleanUp } from "@store/categories copy/productsSlice";
+import { productsCleanUp } from "@store/products/productsSlice";
+import Loading from "@components/feedback/Loading";
+import GridList from "@components/common/GridList/GridList";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -20,21 +22,15 @@ const Products = () => {
     };
   }, [dispatch, params]);
 
-  const productList =
-    records.length > 0
-      ? records.map((record) => (
-          <Col
-            xs={6}
-            md={3}
-            className="d-flex justify-content-center mb-5 mt-2"
-          >
-            <Product {...record} />
-          </Col>
-        ))
-      : "There are no categories";
+
   return (
     <Container>
-      <Row>{productList}</Row>
+      <Loading status={loading} error={error}>
+      <GridList
+          records={records}
+          renderItem={(record) => <Product {...record} />}
+        />
+      </Loading>
     </Container>
   );
 };
