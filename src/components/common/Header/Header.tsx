@@ -3,7 +3,8 @@ import HeaderBasket from "../../ecommerce/HeaderBasket/HeaderBasket";
 import { Badge, Navbar, Nav, Container } from "react-bootstrap";
 import "./style.module.css";
 import styles from "./style.module.css";
-const { headerContainer, headerLogo } = styles;
+import HeaderWishList from "@components/ecommerce/HeaderWishList/HeaderWishList";
+const { headerContainer, headerLogo ,headerLeftBar} = styles;
 
 const Header = () => {
   return (
@@ -12,8 +13,10 @@ const Header = () => {
         <h1 className={headerLogo}>
           <span>Our</span> <Badge bg="info">Ecom</Badge>
         </h1>
-
-        <HeaderBasket />
+        <div className={headerLeftBar}>
+          <HeaderWishList />
+          <HeaderBasket />
+        </div>
       </div>
       <Navbar
         expand="lg"

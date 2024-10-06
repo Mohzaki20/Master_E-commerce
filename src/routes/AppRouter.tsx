@@ -7,6 +7,8 @@ import MainLayout from "@layouts/MainLayout/MainLayout";
 import Register from "@pages/Register";
 import Login from "@pages/Login";
 import Error from "@pages/Error";
+import Cart from "@pages/Cart";
+import WishList from "@pages/WishList.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
         path: "categories",
         element: <Categories />,
       },
@@ -27,17 +33,24 @@ const router = createBrowserRouter([
         element: <AboutUs />,
       },
       {
+        path: "wishlist",
+        element: <WishList />,
+      },
+      {
         path: "categories/products/:prefix",
         element: <Products />,
-        loader: ({params}) => {
-          if (typeof params.prefix !== "string" || !/^[a-z]+$/i.test(params.prefix)) {
-            throw new Response ("Bad Request", {
-              statusText:"Category not found",
+        loader: ({ params }) => {
+          if (
+            typeof params.prefix !== "string" ||
+            !/^[a-z]+$/i.test(params.prefix)
+          ) {
+            throw new Response("Bad Request", {
+              statusText: "Category not found",
               status: 400,
-            })
+            });
           }
-          return true
-        }
+          return true;
+        },
       },
       {
         path: "login",
