@@ -1,6 +1,6 @@
 import { Button, Spinner } from "react-bootstrap";
 import styles from "./style.module.css";
-import { TProduct } from "@customTypes/product";
+import { TProduct } from "@customTypes/product.types";
 import { useAppDispatch } from "@store/hooks";
 import { addToCart } from "@store/cart/cartSlice";
 import { useEffect, useState, memo } from "react";
@@ -16,7 +16,7 @@ const Product = memo(
     const [isLoading, setIsLoading] = useState(false);
     const currentRemainingQuantity = max - (quantity ?? 0);
     const quantityReachedToMax = currentRemainingQuantity <= 0 ? true : false;
-    console.log(isLiked);
+    console.log("hi");
 
     useEffect(() => {
       if (!isBtnDisabled) {
