@@ -1,68 +1,75 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainLayout from "@layouts/MainLayout/MainLayout";
 import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// layouts
+const MainLayout = lazy(() => import("@layouts/MainLayout/MainLayout"));
+// components
+import PageSuspenseFallback from "@components/feedback/PageSuspenseFallback/PageSuspenseFallback";
+import LottieHandler from "@components/feedback/lottieHandler/LottieHandler";
+// pages
 const Home = lazy(() => import("@pages/Home"));
+const Wishlist = lazy(() => import("@pages/WishList"));
 const Categories = lazy(() => import("@pages/Categories"));
+const Cart = lazy(() => import("@pages/Cart"));
 const Products = lazy(() => import("@pages/Products"));
 const AboutUs = lazy(() => import("@pages/AboutUs"));
-const Register = lazy(() => import("@pages/Register"));
 const Login = lazy(() => import("@pages/Login"));
-const Error = lazy(() => import("@pages/Error"));
-const Cart = lazy(() => import("@pages/Cart"));
-const WishList = lazy(() => import("@pages/WishList.tsx"));
+const Register = lazy(() => import("@pages/Register"));
+import Error from "@pages/Error";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <Suspense
+        fallback={
+          <div style={{ marginTop: "10%" }}>
+            <LottieHandler type="loading" message="Loading please wait..." />
+          </div>
+        }
+      >
+        <MainLayout />
+      </Suspense>
+    ),
     errorElement: <Error />,
     children: [
       {
         index: true,
         element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
             <Home />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
       },
       {
         path: "/cart",
         element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
             <Cart />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
       },
       {
-        path: "categories",
+        path: "/wishlist",
         element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
+            <Wishlist />
+          </PageSuspenseFallback>
+        ),
+      },
+      {
+        path: "/categories",
+        element: (
+          <PageSuspenseFallback>
             <Categories />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
       },
       {
-        path: "about-us",
+        path: "/categories/products/:prefix",
         element: (
-          <Suspense fallback="Loading please wait...">
-            <AboutUs />
-          </Suspense>
-        ),
-      },
-      {
-        path: "wishlist",
-        element: (
-          <Suspense fallback="Loading please wait...">
-            <WishList />
-          </Suspense>
-        ),
-      },
-      {
-        path: "categories/products/:prefix",
-        element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
             <Products />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
         loader: ({ params }) => {
           if (
@@ -78,27 +85,35 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: "about-us",
+        element: (
+          <PageSuspenseFallback>
+            <AboutUs />
+          </PageSuspenseFallback>
+        ),
+      },
+      {
         path: "login",
         element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
             <Login />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
       },
       {
         path: "register",
         element: (
-          <Suspense fallback="Loading please wait...">
+          <PageSuspenseFallback>
             <Register />
-          </Suspense>
+          </PageSuspenseFallback>
         ),
       },
     ],
   },
 ]);
 
-function AppRouter() {
+const AppRouter = () => {
   return <RouterProvider router={router} />;
-}
+};
 
 export default AppRouter;

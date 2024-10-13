@@ -3,6 +3,7 @@ import CartSubtotalPrice from "@components/ecommerce/CartSubTotal/CartSubTotal";
 import Loading from "@components/feedback/Loading";
 import CartItemList from "@components/ecommerce/CartItemList/CartItemList.tsx";
 import useCart from "@hooks/useCart";
+import LottieHandler from "@components/feedback/lottieHandler/LottieHandler";
 
 const Cart = () => {
   const { products, loading, error, changeQuantityHandler, removeItemHandler } =
@@ -10,7 +11,7 @@ const Cart = () => {
   return (
     <>
       <Heading title={"Your Cart"} />
-      <Loading error={error} status={loading}>
+      <Loading error={error} status={loading} type="cart">
         {products.length ? (
           <>
             <CartItemList
@@ -21,7 +22,7 @@ const Cart = () => {
             <CartSubtotalPrice products={products} />
           </>
         ) : (
-          "Your Cart is Empty"
+      <LottieHandler type="empty" message="Your cart is empty"/>
         )}
       </Loading>
     </>
