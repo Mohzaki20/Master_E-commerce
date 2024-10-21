@@ -14,6 +14,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import wishlistSlice from "./wishList/wishlistSlice";
+import auth from "./auth/authSlice";
 
 // ...
 
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   products: productsSlice,
   cart: persistReducer(cartPersistConfig, cartSlice),
   wishlist: persistReducer(wishListPersistConfig, wishlistSlice),
+  auth,
 });
 
 export const store = configureStore({
