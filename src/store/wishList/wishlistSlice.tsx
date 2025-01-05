@@ -4,6 +4,7 @@ import actGetWishlist from "./act/actGetWishlist";
 import { TLoading } from "@customTypes/shared.types";
 import { TProduct } from "@customTypes/product.types";
 import { isString } from "@customTypes/guards";
+import { authLogout } from "@store/auth/authSlice";
 
 interface IWishList {
   itemId: number[];
@@ -53,13 +54,21 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(actGetWishlist.fulfilled, (state, action) => {
       state.loading = "succeeded";
-      state.productsFullInfo = action.payload;
+      if (action.payload.dataType === "productsFullInfo") {
+        state.productsFullInfo = action.payload.data as TProduct[];
+      } else if (action.payload.dataType === "ProductIds") {
+        state.itemId = action.payload.data as number[];
+      }
     });
     builder.addCase(actGetWishlist.rejected, (state, action) => {
       state.loading = "failed";
       if (isString(action.payload)) {
         state.error = action.payload;
       }
+    });
+    builder.addCase(authLogout, (state) => {
+      state.itemId = [];
+      state.productsFullInfo = [];
     });
   },
 });

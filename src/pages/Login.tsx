@@ -8,12 +8,12 @@ import { signinSchema } from "@validations/signinSchema/signinSchema";
 import { useEffect } from "react";
 import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
 function Login() {
   const dispatch = useAppDispatch();
-  const { error, loading } = useAppSelector((state) => state.auth);
+  const { error, loading, accessToken } = useAppSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   type signinType = z.infer<typeof signinSchema>;
@@ -30,6 +30,9 @@ function Login() {
     mode: "onBlur",
   });
   const submitForm: SubmitHandler<signinType> = (data: signinType) => {
+    if (searchParams.get("message")) {
+      setSearchParams("");
+    }
     dispatch(actAuthLogin(data))
       .unwrap()
       .then(() => {
@@ -42,11 +45,21 @@ function Login() {
       dispatch(resetUI());
     };
   }, [dispatch]);
+
+  if (accessToken) {
+    return <Navigate to="/" />;
+  }
   return (
     <>
       <Heading title="Login" />
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
+          {searchParams.get("message") === "login_required" && (
+            <Alert variant="success">
+              {" "}
+              You need to login to view this content
+            </Alert>
+          )}
           {searchParams.get("message") === "account_created" && (
             <Alert variant="success">
               {" "}

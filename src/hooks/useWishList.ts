@@ -11,7 +11,7 @@ function useWishList() {
   const cartItems = useAppSelector((state) => state.cart.items);
 
   useEffect(() => {
-    const promise = dispatch(actGetWishlist());
+    const promise = dispatch(actGetWishlist("productsFullInfo"));
     return () => {
       productsfullInfoCleanUp();
       promise.abort();
@@ -22,6 +22,7 @@ function useWishList() {
     ...el,
     quantity: cartItems[el.id],
     isLiked: true,
+    isAuthenticated: true,  
   }));
   return { loading, error, records };
 }

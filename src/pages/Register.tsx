@@ -8,7 +8,7 @@ import Input from "@components/Form/input/Input";
 import useCheckEmailAvailability from "@hooks/useCheckEmailAvailability";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { actAuthRegister, resetUI } from "@store/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 type signupType = z.infer<typeof signupSchema>;
@@ -16,7 +16,7 @@ type signupType = z.infer<typeof signupSchema>;
 function Register() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const { loading, error, accessToken } = useAppSelector((state) => state.auth);
   const {
     register,
     handleSubmit,
@@ -53,11 +53,14 @@ function Register() {
       resetEmailAvailabilty();
     }
   };
-  useEffect(() => {
-    return () => {
-      dispatch(resetUI());
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(resetUI());
+  //   };
+  // }, [dispatch]);
+  if (accessToken) {
+    return <Navigate to="/" />;
+  }
   return (
     <>
       <Heading title="User Registration" />
